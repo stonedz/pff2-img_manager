@@ -13,8 +13,4 @@
 			"role": "Developer"
 		}
 	],
-	"homepage": "https://github.com/stonedz/pff2-img_manager",
-	"require-dev": {
-		"": "*"
-	}
-}
+	"homepage": "https://github.com/stonedz/pff2-img_manager"
