@@ -1,4 +1,4 @@
-Pff2 Installers for Composer
-============================
+Pff2 Image manipulation module
+==============================
 
-Based on [Codeigniter Installers for Composer](https://github.com/compwright/codeigniter-installers)
+Module to manage images
