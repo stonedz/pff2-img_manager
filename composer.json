@@ -1,0 +1,20 @@
+{
+	"name": "stonedz/pff2-img_manager",
+	"type": "pff2-module",
+	"description": "Manages image operations",
+	"license": "MIT",
+	"keywords": [
+		"pff2", "module", "images"
+	],
+	"authors": [
+		{
+			"name": "Paolo Fagni",
+			"email": "paolo.fagni@gmail.com",
+			"role": "Developer"
+		}
+	],
+	"homepage": "https://github.com/stonedz/pff2-img_manager",
+	"require-dev": {
+		"": "*"
+	}
+}
