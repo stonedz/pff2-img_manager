@@ -9,7 +9,7 @@ use pff\IConfigurableModule;
 class Img extends \pff\AModule implements IConfigurableModule{
 
 
-    public function __construct($confFile = 'pff2_img_manager/module.conf.yaml'){
+    public function __construct($confFile = 'pff2-img_manager/module.conf.local.yaml'){
         $this->loadConfig($confFile);
     }
 
