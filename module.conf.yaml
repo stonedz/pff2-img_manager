@@ -1,0 +1,10 @@
+moduleConf:
+  #if resize == true then resize images
+  resize: true
+  #one of width or height can be set to "auto"
+  width: 800
+  height: auto
+  #one of thumb_width or thumb_height can be set to auto
+  thumb_width: 200
+  thumb_height: 200
+
