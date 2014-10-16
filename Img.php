@@ -55,10 +55,11 @@ class Img extends \pff\AModule implements IConfigurableModule{
             $img->resizeimage($img_width, $img_height, \Imagick::FILTER_LANCZOS,1,1);
         }
 
-        $img->writeimage(ROOT.DS.'app'.DS.'public'.DS.'files'.$name);
+        $dest = ROOT.DS.'app'.DS.'public'.DS.'files';
+        $img->writeimage($dest. DS . $name);
 
         if($create_thumb) {
-            $this->createThumb($tmp_file,22,22,22,22);
+            $this->createThumb($tmp_file, $dest.DS.'thumb_'.$name,$this->_thumb_width,$this->_thumb_height);
 
         }
         return true;
