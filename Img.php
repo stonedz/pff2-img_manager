@@ -8,10 +8,11 @@ use pff\IConfigurableModule;
  */
 class Img extends \pff\AModule implements IConfigurableModule{
 
-    private $_resize, $_width, $_height, $_thumb_width, $_thumb_height;
+    private $_resize, $_width, $_height, $_thumb_width, $_thumb_height, $dest;
 
     public function __construct($confFile = 'pff2-img_manager/module.conf.local.yaml'){
         $this->loadConfig($confFile);
+        $this->dest = ROOT.DS.'app'.DS.'public'.DS.'files';
     }
 
     public function loadConfig($confFile) {
@@ -21,21 +22,12 @@ class Img extends \pff\AModule implements IConfigurableModule{
         $this->_height       = $conf['moduleConf']['height'];
         $this->_thumb_width  = $conf['moduleConf']['thumb_width'];
         $this->_thumb_height = $conf['moduleConf']['thumb_height'];
-
-
-//        try {
-//            foreach ($conf['moduleConf']['activeLoggers'] as $logger) {
-//                $tmpClass         = new \ReflectionClass('\\pff\\modules\\' . (string)$logger['class']);
-//                $this->_loggers[] = $tmpClass->newInstance();
-//            }
-//        } catch (\ReflectionException $e) {
-//            throw new \pff\modules\LoggerException('Logger creation failed: ' . $e->getMessage());
-//        }
     }
 
     /**
-     * Saves an Img uploaded
-     *
+     * @param $fileArray
+     * @param bool $create_thumb
+     * @return bool|string
      */
     public function saveImage($fileArray, $create_thumb = false) {
 
@@ -55,14 +47,37 @@ class Img extends \pff\AModule implements IConfigurableModule{
             $img->resizeimage($img_width, $img_height, \Imagick::FILTER_LANCZOS,1,1);
         }
 
-        $dest = ROOT.DS.'app'.DS.'public'.DS.'files';
-        $img->writeimage($dest. DS . $name);
-
+        $name = (substr(md5(microtime()),0,4)).$name;
+        try {
+            $img->writeimage($this->dest . DS . $name);
+        }
+        catch(\Exception $e) {
+            return false;
+        }
         if($create_thumb) {
-            $this->createThumb($tmp_file, $dest.DS.'thumb_'.$name,$this->_thumb_width,$this->_thumb_height);
+            $this->createThumb($tmp_file, $this->dest.DS.'thumb_'.$name,$this->_thumb_width,$this->_thumb_height);
 
         }
-        return true;
+        return $name;
+    }
+
+    /**
+     * Deletes an image
+     *
+     * @param $name string Name of the image to delete (the image should be in the Img::dest folder)
+     * @return bool
+     */
+    public function removeImage($name) {
+        $success = unlink($this->dest. DS . $name);
+        if($success) {
+            if(file_exists($this->dest. DS . 'thumb_'.$name)) {
+                $success = unlink($this->dest.DS.'thumb_'.$name);
+                return $success;
+            }
+        }
+        else {
+            return false;
+        }
     }
 
     private function createThumb($tmp_file, $destination, $x, $y, $quality = 70) {
