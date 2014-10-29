@@ -16,5 +16,10 @@
 	"homepage": "https://github.com/stonedz/pff2-img_manager",
 	"require": {
 		"stonedz/pff2-installers": "*" 	
-	}
+	},
+    "autoload": {
+        "psr-4": {
+            "pff\\modules\\": "src/"
+        }
+    }
 }
