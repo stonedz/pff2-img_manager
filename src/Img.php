@@ -1,12 +1,13 @@
 <?php
 
 namespace pff\modules;
-use pff\IConfigurableModule;
+use pff\Abs\AModule;
+use pff\Iface\IConfigurableModule;
 
 /**
  * Manages images
  */
-class Img extends \pff\AModule implements IConfigurableModule{
+class Img extends AModule implements IConfigurableModule{
 
     private $_resize, $_width, $_height, $_thumb_width, $_thumb_height, $dest;
 
