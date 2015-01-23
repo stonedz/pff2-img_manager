@@ -69,7 +69,7 @@ class Img extends AModule implements IConfigurableModule{
      * @return bool
      */
     public function removeImage($name) {
-      if(file_exists($this->dest. DS . $name) {
+      if(file_exists($this->dest. DS . $name)) {
         $success = unlink($this->dest. DS . $name);
       }
       else {
