@@ -69,16 +69,22 @@ class Img extends AModule implements IConfigurableModule{
      * @return bool
      */
     public function removeImage($name) {
+      if(file_exists($this->dest. DS . $name) {
         $success = unlink($this->dest. DS . $name);
-        if($success) {
-            if(file_exists($this->dest. DS . 'thumb_'.$name)) {
-                $success = unlink($this->dest.DS.'thumb_'.$name);
-                return $success;
-            }
+      }
+      else {
+        $success = false;
+      }
+
+      if($success) {
+        if(file_exists($this->dest. DS . 'thumb_'.$name)) {
+          $success = unlink($this->dest.DS.'thumb_'.$name);
+          return $success;
         }
-        else {
-            return false;
-        }
+      }
+      else {
+        return false;
+      }
     }
 
     private function createThumb($tmp_file, $destination, $x, $y, $quality = 70) {
