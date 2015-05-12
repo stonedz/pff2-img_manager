@@ -9,7 +9,7 @@ use pff\Iface\IConfigurableModule;
  */
 class Img extends AModule implements IConfigurableModule{
 
-    private $_resize, $_width, $_height, $_thumb_width, $_thumb_height, $dest;
+    private $_resize, $_width, $_height, $_thumb_width, $_thumb_height, $dest, $validMimeTypes, $maxFileSize;
 
     public function __construct($confFile = 'pff2-img_manager/module.conf.local.yaml'){
         $this->loadConfig($confFile);
@@ -23,17 +23,26 @@ class Img extends AModule implements IConfigurableModule{
         $this->_height       = $conf['moduleConf']['height'];
         $this->_thumb_width  = $conf['moduleConf']['thumb_width'];
         $this->_thumb_height = $conf['moduleConf']['thumb_height'];
+        $this->validMimeTypes = $conf['moduleConf']['validMimeTypes'];
+        $this->maxFileSize = $conf['moduleConf']['maxFileSize'];
     }
 
     /**
      * @param $fileArray
      * @param bool $create_thumb
+     * @param $destination // absolute to app/public/files directory, no trailing slash
      * @return bool|string
      */
-    public function saveImage($fileArray, $create_thumb = false) {
+    public function saveImage($fileArray, $create_thumb = false, $destination = false) {
 
         $tmp_file = $fileArray['tmp_name'];
         $name     = $fileArray['name'];
+
+        if(!$destination){
+            $dest = $this->dest;
+        }else{
+            $dest = $this->dest . DS . $destination;
+        }
 
         $img = new \Imagick($tmp_file);
         $img_width = $img->getimagewidth();
@@ -50,13 +59,13 @@ class Img extends AModule implements IConfigurableModule{
 
         $name = (substr(md5(microtime()),0,4)).$name;
         try {
-            $img->writeimage($this->dest . DS . $name);
+            $img->writeimage($dest . DS . $name);
         }
         catch(\Exception $e) {
             return false;
         }
         if($create_thumb) {
-            $this->createThumb($tmp_file, $this->dest.DS.'thumb_'.$name,$this->_thumb_width,$this->_thumb_height);
+            $this->createThumb($tmp_file, $dest.DS.'thumb_'.$name,$this->_thumb_width,$this->_thumb_height);
 
         }
         return $name;
@@ -68,17 +77,24 @@ class Img extends AModule implements IConfigurableModule{
      * @param $name string Name of the image to delete (the image should be in the Img::dest folder)
      * @return bool
      */
-    public function removeImage($name) {
-      if(file_exists($this->dest. DS . $name)) {
-        $success = unlink($this->dest. DS . $name);
-      }
-      else {
-        $success = false;
-      }
+    public function removeImage($name, $destination = false) {
+
+        if(!$destination){
+            $dest = $this->dest;
+        }else{
+            $dest = $this->dest . DS . $destination;
+        }
+
+        if(file_exists($destination. DS . $name)) {
+            $success = unlink($destination. DS . $name);
+        }
+        else {
+            $success = false;
+        }
 
       if($success) {
-        if(file_exists($this->dest. DS . 'thumb_'.$name)) {
-          $success = unlink($this->dest.DS.'thumb_'.$name);
+        if(file_exists($destination. DS . 'thumb_'.$name)) {
+          $success = unlink($destination.DS.'thumb_'.$name);
           return $success;
         }
       }
@@ -110,5 +126,52 @@ class Img extends AModule implements IConfigurableModule{
             return false;
         }
 
+    }
+
+    /**
+     * @param $fileArray
+     * @return bool
+     */
+    public function checkMimeType($fileArray) {
+        if(empty($fileArray['type']))
+            return false;
+        if(in_array($fileArray['type'], $this->validMimeTypes)) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    /**
+     * @param $fileArray
+     * @return bool
+     */
+    public function checkSize($fileArray) {
+        if($this->maxFileSize == 0){
+            return true;
+        }else{
+            if($fileArray['size'] <= $this->maxFileSize*1048576){
+                return true;
+            }else{
+                return false;
+            }
+        }
+    }
+
+    public function setWidth($width){
+        $this->_width = $width;
+    }
+
+    public function setHeight($height){
+        $this->_height = $height;
+    }
+
+    public function setThumbWidth($width){
+        $this->_thumb_width = $width;
+    }
+
+    public function setThumbHeight($height){
+        $this->_thumb_height = $height;
     }
 }

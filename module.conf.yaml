@@ -7,4 +7,11 @@ moduleConf:
   #one of thumb_width or thumb_height can be set to auto
   thumb_width: 200
   thumb_height: 200
+  #max file size in MB, 0 for no limit
+  maxFileSize: 2
+
+  validMimeTypes:
+    - image/jpeg
+    - image/pjpeg
+    - image/png
 
