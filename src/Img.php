@@ -30,7 +30,7 @@ class Img extends AModule implements IConfigurableModule{
     /**
      * @param $fileArray
      * @param bool $create_thumb
-     * @param $destination // absolute to app/public/files directory, no trailing slash
+     * @param $destination // relative to app/public/files directory, no trailing slash
      * @return bool|string
      */
     public function saveImage($fileArray, $create_thumb = false, $destination = false) {
