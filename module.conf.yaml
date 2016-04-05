@@ -9,3 +9,11 @@ moduleConf:
   thumb_height: 200
   # dpi settings
   dpi: 72
+  #max file size in MB, 0 for no limit
+  maxFileSize: 2
+
+  validMimeTypes:
+    - image/jpeg
+    - image/pjpeg
+    - image/png
+
