@@ -9,7 +9,7 @@ use pff\Iface\IConfigurableModule;
  */
 class Img extends AModule implements IConfigurableModule{
 
-    private $_resize, $_width, $_height, $_thumb_width, $_thumb_height, $dest;
+    private $_resize, $_width, $_height, $_thumb_width, $_thumb_height, $dest, $_dpi;
 
     public function __construct($confFile = 'pff2-img_manager/module.conf.local.yaml'){
         $this->loadConfig($confFile);
@@ -23,6 +23,7 @@ class Img extends AModule implements IConfigurableModule{
         $this->_height       = $conf['moduleConf']['height'];
         $this->_thumb_width  = $conf['moduleConf']['thumb_width'];
         $this->_thumb_height = $conf['moduleConf']['thumb_height'];
+        $this->_dpi          = $conf['moduleConf']['dpi'];
     }
 
     /**
@@ -48,7 +49,13 @@ class Img extends AModule implements IConfigurableModule{
             $img->resizeimage($img_width, $img_height, \Imagick::FILTER_LANCZOS,1,1);
         }
 
+        #dpi
+        $img->setImageUnits(\Imagick::RESOLUTION_PIXELSPERINCH);
+        $img->setImageResolution($this->_dpi, $this->_dpi);
+
+
         $name = (substr(md5(microtime()),0,4)).$name;
+        $name = str_replace(' ', '', $name);
         try {
             $img->writeimage($this->dest . DS . $name);
         }

@@ -7,4 +7,5 @@ moduleConf:
   #one of thumb_width or thumb_height can be set to auto
   thumb_width: 200
   thumb_height: 200
-
+  # dpi settings
+  dpi: 72
