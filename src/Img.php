@@ -24,8 +24,9 @@ class Img extends AModule implements IConfigurableModule{
         $this->_thumb_width  = $conf['moduleConf']['thumb_width'];
         $this->_thumb_height = $conf['moduleConf']['thumb_height'];
         $this->_dpi          = $conf['moduleConf']['dpi'];
+        $this->_compression  = $conf['moduleConf']['compression_quality'];
         $this->validMimeTypes = $conf['moduleConf']['validMimeTypes'];
-        $this->maxFileSize = $conf['moduleConf']['maxFileSize'];
+        $this->maxFileSize   = $conf['moduleConf']['maxFileSize'];
     }
 
     /**
@@ -62,6 +63,8 @@ class Img extends AModule implements IConfigurableModule{
         $img->setImageUnits(\Imagick::RESOLUTION_PIXELSPERINCH);
         $img->setImageResolution($this->_dpi, $this->_dpi);
 
+        #compression
+        $img->setImageCompressionQuality($this->_compression);
 
         $name = (substr(md5(microtime()),0,4)).$name;
         $name = str_replace(' ', '', $name);

@@ -9,6 +9,8 @@ moduleConf:
   thumb_height: 200
   # dpi settings
   dpi: 72
+  # quality compression, put 100 for no comrpession
+  compression_quality: 80
   #max file size in MB, 0 for no limit
   maxFileSize: 2
 
