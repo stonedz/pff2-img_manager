@@ -50,13 +50,13 @@ class Img extends AModule implements IConfigurableModule{
         $img_width = $img->getimagewidth();
         $img_height = $img->getimageheight();
         if($this->_height == 'auto' && is_numeric($this->_width) && $img_width>$this->_width) { // resize only width
-            $img->resizeimage($img_width, 0, \Imagick::FILTER_LANCZOS,1);
+            $img->resizeimage($this->_width, 0, \Imagick::FILTER_LANCZOS,1);
         }
         elseif($this->_width == 'auto' && is_numeric($this->_height) && $img_height>$this->_height) {
-            $img->resizeimage(0, $img_height, \Imagick::FILTER_LANCZOS,1);
+            $img->resizeimage(0, $this->_height, \Imagick::FILTER_LANCZOS,1);
         }
         elseif(is_numeric($this->_height) && is_numeric($this->_width)) {
-            $img->resizeimage($img_width, $img_height, \Imagick::FILTER_LANCZOS,1,1);
+            $img->resizeimage($this->_width, $this->_height, \Imagick::FILTER_LANCZOS,1,1);
         }
 
         #dpi
