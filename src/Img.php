@@ -33,9 +33,10 @@ class Img extends AModule implements IConfigurableModule{
      * @param $fileArray
      * @param bool $create_thumb
      * @param $destination // relative to app/public/files directory, no trailing slash
+     *
      * @return bool|string
      */
-    public function saveImage($fileArray, $create_thumb = false, $destination = false) {
+    public function saveImage($fileArray, $create_thumb = false, $destination = false, $multi=false) {
 
         $tmp_file = $fileArray['tmp_name'];
         $name     = $fileArray['name'];
@@ -49,6 +50,9 @@ class Img extends AModule implements IConfigurableModule{
         $img = new \Imagick($tmp_file);
         $img_width = $img->getimagewidth();
         $img_height = $img->getimageheight();
+
+
+
         if($this->_height == 'auto' && is_numeric($this->_width) && $img_width>$this->_width) { // resize only width
             $img->resizeimage($this->_width, 0, \Imagick::FILTER_LANCZOS,1);
         }
@@ -78,6 +82,12 @@ class Img extends AModule implements IConfigurableModule{
             $this->createThumb($tmp_file, $dest.DS.'thumb_'.$name,$this->_thumb_width,$this->_thumb_height);
 
         }
+
+        if($multi) { // create 1920xX and 800xX
+            $this->createThumb($tmp_file, $dest.DS.'hd_'.$name,1920,0);
+            $this->createThumb($tmp_file, $dest.DS.'small_'.$name,800,0);
+        }
+
         return $name;
     }
 
