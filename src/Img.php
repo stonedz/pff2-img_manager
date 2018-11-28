@@ -105,16 +105,16 @@ class Img extends AModule implements IConfigurableModule{
             $dest = $this->dest . DS . $destination;
         }
 
-        if(file_exists($destination. DS . $name)) {
-            $success = unlink($destination. DS . $name);
+        if(file_exists($dest. DS . $name)) {
+            $success = unlink($dest. DS . $name);
         }
         else {
             $success = false;
         }
 
       if($success) {
-        if(file_exists($destination. DS . 'thumb_'.$name)) {
-          $success = unlink($destination.DS.'thumb_'.$name);
+        if(file_exists($dest. DS . 'thumb_'.$name)) {
+          $success = unlink($dest.DS.'thumb_'.$name);
           return $success;
         }
       }
