@@ -51,7 +51,19 @@ class Img extends AModule implements IConfigurableModule{
         $img_width = $img->getimagewidth();
         $img_height = $img->getimageheight();
 
+        $exif = exif_read_data($tmp_file);
+        $orientation = $exif['Orientation'];
+        switch($orientation) {
 
+           case 6: // rotate 90 degrees CW
+               $img->rotateimage("#FFF", 90);
+           break;
+
+           case 8: // rotate 90 degrees CCW
+              $img->rotateimage("#FFF", -90);
+           break;
+
+       }
 
         if($this->_height == 'auto' && is_numeric($this->_width) && $img_width>$this->_width) { // resize only width
             $img->resizeimage($this->_width, 0, \Imagick::FILTER_LANCZOS,1);
