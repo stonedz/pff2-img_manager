@@ -15,8 +15,12 @@
 	],
 	"homepage": "https://github.com/stonedz/pff2-img_manager",
 	"require": {
-		"stonedz/pff2-installers": "*" 	
+        "php" : ">=7",
+		"stonedz/pff2-installers": "~3" 	
 	},
+    "require-dev": {
+        "stonedz/pff2": "v3.0.x-dev"
+    },
     "autoload": {
         "psr-4": {
             "pff\\modules\\": "src/"

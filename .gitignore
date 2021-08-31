@@ -4,3 +4,4 @@ module.conf.local.yaml
 vendor
 composer.lock
 composer.phar
+.php-cs-fixer.cache
