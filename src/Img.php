@@ -62,10 +62,11 @@ class Img extends AModule implements IConfigurableModule
         $img_width = $img->getimagewidth();
         $img_height = $img->getimageheight();
 
-        $exif = exif_read_data($tmp_file);
-        if (isset($exif['Orientation'])) {
-            $orientation = $exif['Orientation'];
-            switch ($orientation) {
+        if(function_exists('exif_read_data')){
+            $exif = exif_read_data($tmp_file);
+            if (isset($exif['Orientation'])) {
+                $orientation = $exif['Orientation'];
+                switch ($orientation) {
 
                 case 6: // rotate 90 degrees CW
                     $img->rotateimage("#FFF", 90);
@@ -74,7 +75,7 @@ class Img extends AModule implements IConfigurableModule
                 case 8: // rotate 90 degrees CCW
                     $img->rotateimage("#FFF", -90);
                     break;
-
+                }
             }
         }
 
